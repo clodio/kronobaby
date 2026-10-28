@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Sélection</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="manifest" href="manifest.json">
+
+</head>
+<body>
+    <div class="menu">
+        <label for="scenario-selector">Choisissez un scénario :</label>
+        <select id="scenario-selector">
+            <option value="">Accueil</option>
+            <option value="binomes_hors_ligne_1">Binomes hors-ligne 1</option>
+            <option value="binomes_hors_ligne_2">Binomes hors-ligne 2</option>
+            <option value="binomes_hors_ligne_3">Binomes hors-ligne 3</option>
+            <option value="binomes_hors_ligne_4">Binomes hors-ligne 4</option>
+            <option value="binomes_hors_ligne_5">Binomes hors-ligne 5</option>
+        
+            <option value="l_ordre_du_temps_1">L'ordre du temps 1</option>
+            <option value="l_ordre_du_temps_2">L'ordre du temps 2</option>
+            <option value="l_ordre_du_temps_3">L'ordre du temps 3</option>
+            <option value="l_ordre_du_temps_4">L'ordre du temps 4</option>
+            <option value="l_ordre_du_temps_5">L'ordre du temps 5</option>
+
+            <option value="le_code_secret_1">Le code secret 1</option>
+            <option value="le_code_secret_2">Le code secret 2</option>
+            <option value="le_code_secret_3">Le code secret 3</option>
+            <option value="le_code_secret_4">Le code secret 4</option>
+            <option value="le_code_secret_5">Le code secret 5</option>
+
+        </select>
+        <div class="buttons" id="buttons-container">
+            <button onclick="showScenarioImage('scenario')">Description</button>
+            <button onclick="showScenarioImage('scenario_detail')">Détail</button>
+            <button onclick="showScenarioImage('setup')">Mise en place</button>
+            <button onclick="showSelectionTable()">Enquête</button>
+            <button onclick="showScenarioImage('solution')">Solution</button>
+        </div>
+    </div>
+    
+    <p id="welcome-message" class="welcome-message">Bienvenue dans ce jeu. Achetez le jeu pour pouvoir jouer à ces enquetes. Choisissez un scénario pour commencer.<br/>
+        <img class="help" src="images/optimized/afda217ad7d4ae620f3c3ea472e522831396e2951c67ac0c07108b06310090f4.webp" alt="aide"/>
+    </p>
+    
+    <img id="scenario-image" class="scenario-image" src="" alt="Scenario Image">
+    
+    <div class="table-container" id="table-container">
+        <table>
+            <tbody>
+                <tr>
+                    <td><img id="time1" src="images/time1.webp" class="time"></td>
+                    <td><img id="place1" src="images/place1.webp" class="place"></td>
+                    <td><img id="character1" src="images/optimized/8be971e861838c6ffa096996ef13b6dfb98b333866ec6896dd67f6816fcd2833.webp" class="character"></td>
+                </tr>
+                <tr>
+                    <td><img id="time2" src="images/time2.webp" class="time"></td>
+                    <td><img id="place2" src="images/place2.webp" class="place"></td>
+                    <td><img id="character2" src="images/optimized/7fe158287b6112aaf2bb2bb7dfd85e8dc8d22efeb45aaa9c5a443e0e355681c7.webp" class="character"></td>
+                </tr>   
+                <tr>
+                    <td><img id="time3" src="images/time3.webp" class="time"></td>
+                    <td><img id="place3" src="images/place3.webp" class="place"></td>
+                    <td><img id="character3" src="images/optimized/1a2f7501be4c40058d7c3877467321e2e7c515b04671407d5f9a92776544fa2b.webp" class="character"></td>
+                </tr>    
+                <tr>
+                    <td><img id="time4" src="images/time4.webp" class="time"></td>
+                    <td><img id="place4" src="images/place4.webp" class="place"></td>
+                    <td><img id="character4" src="images/optimized/3661ebba90a4988776f3d3e71e0b69d07c25012c83fb006eb6a46a1a14aef957.webp" class="character"></td>
+                </tr>   
+                <tr>
+                    <td><img id="time5" src="images/time5.webp" class="time"></td>
+                    <td><img id="place5" src="images/place5.webp" class="place"></td>
+                    <td><img id="character5" src="images/optimized/feb775561119900037843b8edb68be032d0d776cbb9c139b1ecb14dec8e378b5.webp" class="character"></td>
+                </tr>
+                <tr>
+                    <td><img id="time6" src="images/time6.webp" class="time"></td>
+                    <td><img id="place6" src="images/place6.webp" class="place"></td>
+                    <td><img id="character6" src="images/optimized/f11fcced922cd3480f7d19ef64ea883446c886319ee1585756344fedfd7b7631.webp" class="character"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <script src="./image-assets.js"></script>
+    <script>
+        function imageSource(logicalPath) {
+            return IMAGE_ASSETS[logicalPath] || logicalPath;
+        }
+
+        document.getElementById("scenario-selector").addEventListener("change", function() {
+            document.dispatchEvent(new Event('selection-reset'));
+            const scenario = this.value;
+            const buttonsContainer = document.getElementById("buttons-container");
+            const welcomeMessage = document.getElementById("welcome-message");
+            const scenarioImage = document.getElementById("scenario-image");
+            const tableContainer = document.getElementById("table-container");
+            
+            if (scenario) {
+                showScenarioImage('scenario');
+                buttonsContainer.style.display = "block";
+                welcomeMessage.style.display = "none";
+            } else {
+                buttonsContainer.style.display = "none";
+                welcomeMessage.style.display = "block";
+                scenarioImage.style.display = "none";
+                tableContainer.style.display = "none";
+            }
+        });
+        
+        function showScenarioImage(type) {
+            const scenario = document.getElementById("scenario-selector").value;
+            if (!scenario) return;
+            document.dispatchEvent(new Event('selection-reset'));
+            
+            const imageElement = document.getElementById("scenario-image");
+            imageElement.src = imageSource(`images/${scenario}/${type}.webp`);
+            imageElement.style.display = "block";
+            document.getElementById("table-container").style.display = "none";
+
+            for (let i = 1; i <= 6; i++) {
+                const valeurs = ["character", "place", "time"];
+                for (let j = 0; j < valeurs.length; j++) {
+                    const tablecontent = document.getElementById(`${valeurs[j]}${i}`);
+                    tablecontent.src = imageSource(`images/${scenario}/${valeurs[j]}${i}.webp`);
+                    tablecontent.alt = `${valeurs[j]} ${i}`;
+                }
+            }
+        }
+        
+        function showSelectionTable() {
+            document.getElementById("scenario-image").style.display = "none";
+            document.getElementById("table-container").style.display = "flex";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let selectedTimeOrPlace = null;
+            let selectedCharacter = null;
+            let timeoutId = null;
+            const overlay = document.getElementById("overlay");
+            
+            function updateDisplay() {
+                overlay.innerHTML = "";
+                overlay.style.display = "none";
+                
+                if (selectedCharacter && selectedTimeOrPlace) {
+                    const characterImg = document.createElement("img");
+                    const scenario = document.getElementById("scenario-selector").value;
+                    characterImg.src = imageSource(`images/${scenario}/${selectedCharacter.id}-informations.jpg`);
+                    characterImg.alt = `Informations ${selectedCharacter.alt}`;
+                    characterImg.classList.add("character");
+                    overlay.appendChild(characterImg);
+                    
+                    const topImg = document.createElement("img");
+                    topImg.src = selectedTimeOrPlace.src;
+                    topImg.alt = selectedTimeOrPlace.alt;
+                    overlay.appendChild(topImg);
+                    
+                    overlay.style.display = "flex";
+                }
+            }
+            
+            function clearSelection() {
+                clearTimeout(timeoutId);
+                timeoutId = null;
+                if (selectedTimeOrPlace) selectedTimeOrPlace.classList.remove("selected");
+                if (selectedCharacter) selectedCharacter.classList.remove("selected");
+                selectedTimeOrPlace = null;
+                selectedCharacter = null;
+                updateDisplay();
+            }
+
+            document.addEventListener('selection-reset', clearSelection);
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape') clearSelection();
+            });
+            overlay.addEventListener('click', clearSelection);
+            
+            function resetTimeout() {
+                if (timeoutId) clearTimeout(timeoutId);
+                if (selectedCharacter && selectedTimeOrPlace) {
+                    timeoutId = setTimeout(() => {
+                        clearSelection();
+                    }, 5000);
+                }
+            }
+            
+            document.querySelectorAll(".time, .place").forEach(img => {
+                img.addEventListener("click", function() {
+                    if (selectedTimeOrPlace === this) {
+                        this.classList.remove("selected");
+                        selectedTimeOrPlace = null;
+                    } else {
+                        if (selectedTimeOrPlace) {
+                            selectedTimeOrPlace.classList.remove("selected");
+                        }
+                        this.classList.add("selected");
+                        selectedTimeOrPlace = this;
+                    }
+                    updateDisplay();
+                    resetTimeout();
+                });
+            });
+
+            document.querySelectorAll(".character").forEach(img => {
+                img.addEventListener("click", function() {
+                    if (selectedCharacter === this) {
+                        this.classList.remove("selected");
+                        selectedCharacter = null;
+                    } else {
+                        if (selectedCharacter) {
+                            selectedCharacter.classList.remove("selected");
+                        }
+                        this.classList.add("selected");
+                        selectedCharacter = this;
+                    }
+                    updateDisplay();
+                    resetTimeout();
+                });
+            });
+        });
+        if ('serviceWorker' in navigator && ['http:', 'https:'].includes(location.protocol)) {
+            window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then((reg) => console.log('Service Worker enregistré', reg.scope))
+                .catch((err) => console.log('Erreur Service Worker', err));
+            });
+        }
+    </script>
+</body>
+</html>
