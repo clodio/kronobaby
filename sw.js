@@ -1,6 +1,6 @@
 importScripts('./image-assets.js');
 
-const CACHE_NAME = 'cache-kronobabylon-v3';
+const CACHE_NAME = 'cache-kronobabylon-v4';
 const ASSETS = [...new Set([
   './',
   './index.html',
